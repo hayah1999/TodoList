@@ -14,7 +14,7 @@ router.post('/', async (req, res, next) => {
 
     const { error, value } = addSchema.validate(req.body);
     if (error) {
-        return res.status(500).send("Invalid request input \n" + error);
+        return res.status(400).send("Invalid request input \n" + error);
     }
     const createUser = create(value);
     const [err, data] = await asycnWrapper(createUser);
@@ -29,7 +29,7 @@ router.post('/', async (req, res, next) => {
 router.post('/login', async (req, res, next) => {
     const { error, value } = loginSchema.validate(req.body);
     if (error) {
-        return res.status(500).send("Invalid request input \n" + error);
+        return res.status(400).send("Invalid request input \n" + error);
     }
 
     const logUser = login(value);
@@ -50,7 +50,7 @@ router.get('/:id', verifyAuth, async (req, res, next) => {
         if (err) return next(err);
         return res.json(data);
     }
-    return res.status(404).json("You are not authorized to get information of this user");
+    return res.status(401).json("You are not authorized to get information of this user");
 });
 
 // @desc user can delete themselves
@@ -64,7 +64,7 @@ router.delete('/:id', verifyAuth, async (req, res, next) => {
         if (err) return next(err);
         return res.json("user has been deleted successfully");
     }
-    return res.status(404).json("You are not authorized to delete this user");
+    return res.status(401).json("You are not authorized to delete this user");
 });
 
 // @desc user can update themselves
@@ -75,7 +75,7 @@ router.patch('/:id', verifyAuth, async (req, res, next) => {
 
     const { error, value } = modifySchema.validate(req.body);
     if (error) {
-        return res.status(500).send("Invalid request input \n" + error);
+        return res.status(400).send("Invalid request input \n" + error);
     }
     if (String(req.user._id) === req.params.id) {
         const modifyUser = modify(req.params.id, value);
@@ -87,7 +87,7 @@ router.patch('/:id', verifyAuth, async (req, res, next) => {
         });
     }
 
-    return res.status(404).json("You are not authorized to edit this user");
+    return res.status(401).json("You are not authorized to edit this user");
 });
 
 

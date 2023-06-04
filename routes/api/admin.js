@@ -12,7 +12,7 @@ const router = express.Router();
 router.post('/', async (req, res, next) => {
     const { error, value } = addSchema.validate(req.body);
     if (error) {
-        return res.status(500).send("Invalid request input \n" + error);
+        return res.status(400).send("Invalid request input \n" + error);
     }
     const adminCreation = createAdmin(value);
     const [err, data] = await asycnWrapper(adminCreation);
@@ -27,7 +27,7 @@ router.post('/', async (req, res, next) => {
 router.post('/login', async (req, res, next) => {
     const { error, value } = loginSchema.validate(req.body);
     if (error) {
-        return res.status(500).send("Invalid request input \n" + error);
+        return res.status(400).send("Invalid request input \n" + error);
     }
 
     const logAdmin = adminLogin(value);
@@ -80,7 +80,7 @@ router.patch('/todos/:id', verifyAdmin, async (req, res, next) => {
 
     const { error, value } = modifySchema.validate(req.body);
     if (error) {
-        return res.status(500).send("Invalid request input \n" + error);
+        return res.status(400).send("Invalid request input \n" + error);
     }
     const todoModification = modifyTodo(req.params.id, value);
     const [err, data] = await asycnWrapper(todoModification);

@@ -22,7 +22,6 @@ const create = async (data) => {
     })
 
     if (user) {
-        console.log(user);
         const token = jwt.sign({
             username: user.username, userId: user._id
         }, process.env.JWT_SECRET, { expiresIn: '7d' });

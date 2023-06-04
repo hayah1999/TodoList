@@ -17,7 +17,7 @@ router.post('/', verifyAuth, async (req, res, next) => {
 
     const { error, value } = addSchema.validate(req.body);
     if (error) {
-        return res.status(500).send("Invalid request input \n" + error);
+        return res.status(400).send("Invalid request input \n" + error);
     }
     value.userId = req.user._id;
     const addTodo = add(value);
@@ -35,7 +35,7 @@ router.patch('/:id', verifyAuth, async (req, res, next) => {
 
     const { error, value } = modifySchema.validate(req.body);
     if (error) {
-        return res.status(500).send("Invalid request input \n" + error);
+        return res.status(400).send("Invalid request input \n" + error);
     }
     const modifyTodo = modify(req.params.id, req.user._id, value);
     const [err, data] = await asycnWrapper(modifyTodo);
